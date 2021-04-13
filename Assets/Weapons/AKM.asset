@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6263994ad75a26bdb9217351cc45082, type: 3}
+  m_Name: AKM
+  m_EditorClassIdentifier: 
+  name: AKM
+  firerate: 0.08
+  aimSpeed: 10
+  prefab: {fileID: 6134249597399439254, guid: 24247bc4bed674a3bb54beb639678973, type: 3}
+  walkModifier: 0.8
+  aimWalkModifier: 0.5
+  bloom: 25
+  kickback: 0.1
+  visualRecoil: 0.5
+  visualRecoilADS: 0.1
+  baseHorizontalRecoil: 100
+  baseVerticalRecoil: 300
+  randomness: 200
