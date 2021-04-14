@@ -16,6 +16,8 @@ public class Look : MonoBehaviour
     private bool cursorLocked;
     private float ySway = 10f;
     private float xSway = 10f;
+    private float xSwaySpeed = 4f;
+    private float curXSwaySpeed = 0f;
     Quaternion xAdj;
     Quaternion xDelta;
 
@@ -46,14 +48,20 @@ public class Look : MonoBehaviour
         // Left and right sway
         xAdj = Quaternion.AngleAxis(xSway, Vector3.up);
         xDelta = player.localRotation * xAdj;
+        curXSwaySpeed = 0f;
 
     }
 
     void WeaponSway () {
 
-        
-        //player.localRotation = delta;
-        player.localRotation = Quaternion.Lerp(player.localRotation, xDelta, Time.deltaTime * 4f);
+        player.localRotation = Quaternion.Lerp(player.localRotation, xDelta, Time.deltaTime * curXSwaySpeed);
+        curXSwaySpeed = Mathf.Lerp(curXSwaySpeed, xSwaySpeed, Time.deltaTime * 4f);
+
+        Debug.Log(Quaternion.Angle(player.localRotation, xDelta));
+
+        if (Quaternion.Angle(player.localRotation, xDelta) < 0.5f) {
+            NewSwayOffset();
+        }
 
     }
 
