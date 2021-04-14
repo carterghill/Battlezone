@@ -14,12 +14,17 @@ public class Look : MonoBehaviour
 
     private Quaternion camCenter;
     private bool cursorLocked;
+    private float ySway = 10f;
+    private float xSway = 10f;
+    Quaternion xAdj;
+    Quaternion xDelta;
 
     // Start is called before the first frame update
     void Start()
     {
         camCenter = cam.localRotation;   
         cursorLocked = true;
+        NewSwayOffset();
     }
 
     // Update is called once per frame
@@ -29,7 +34,27 @@ public class Look : MonoBehaviour
             SetY();
             SetX();
         }
+        WeaponSway();
         UpdateCursorLock();
+    }
+
+    void NewSwayOffset() {
+
+        ySway = -ySway;
+        xSway = -xSway;
+
+        // Left and right sway
+        xAdj = Quaternion.AngleAxis(xSway, Vector3.up);
+        xDelta = player.localRotation * xAdj;
+
+    }
+
+    void WeaponSway () {
+
+        
+        //player.localRotation = delta;
+        player.localRotation = Quaternion.Lerp(player.localRotation, xDelta, Time.deltaTime * 4f);
+
     }
 
     void SetY()
@@ -57,6 +82,7 @@ public class Look : MonoBehaviour
         Quaternion adj = Quaternion.AngleAxis(input, Vector3.up);
         Quaternion delta = player.localRotation * adj;
         player.localRotation = delta;
+        //player.localRotation = Quaternion.Lerp(player.localRotation, delta, Time.deltaTime * 4f);
     }
 
     void UpdateCursorLock()
