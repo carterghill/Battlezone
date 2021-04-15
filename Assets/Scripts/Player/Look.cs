@@ -18,10 +18,14 @@ public class Look : MonoBehaviour
     private float ySwayMax = 1f;
     private float ySwaySpeed = 0.4f;
     private float curYSwaySpeed = 0f;
+    private float ySwayTime = 0f;
+    private float ySwayTimeMax = 3.5f;
     private float xSway = 0.75f;
     private float xSwayMax = 1f;
     private float xSwaySpeed = 0.5f;
     private float curXSwaySpeed = 0f;
+    private float xSwayTime = 0f;
+    private float xSwayTimeMax = 3.5f;
     Quaternion xAdj;
     Quaternion xDelta;
     Quaternion yAdj;
@@ -54,6 +58,7 @@ public class Look : MonoBehaviour
         xAdj = Quaternion.AngleAxis(xSway, Vector3.up);
         xDelta = player.localRotation * xAdj;
         curXSwaySpeed = 0f;
+        xSwayTime = 0f;
 
     }
 
@@ -64,6 +69,7 @@ public class Look : MonoBehaviour
         yAdj = Quaternion.AngleAxis(ySway, -Vector3.right);
         yDelta = cam.localRotation * yAdj;
         curYSwaySpeed = 0f;
+        ySwayTime = 0f;
 
     }
 
@@ -71,11 +77,12 @@ public class Look : MonoBehaviour
 
         // Sway horizontal
         player.localRotation = Quaternion.Lerp(player.localRotation, xDelta, Time.deltaTime * curXSwaySpeed);
-        curXSwaySpeed = Mathf.Lerp(curXSwaySpeed, xSwaySpeed, Time.deltaTime * 1f);
+        curXSwaySpeed = Mathf.Lerp(curXSwaySpeed, xSwaySpeed, Time.deltaTime * 1.25f);
         Debug.Log(Quaternion.Angle(player.localRotation, xDelta));
+        xSwayTime += Time.deltaTime;
 
         float t_ang = Quaternion.Angle(player.localRotation, xDelta);
-        if (t_ang < 0.25f || t_ang > ySwayMax) {
+        if (t_ang < 0.25f || t_ang > ySwayMax || xSwayTime > xSwayTimeMax) {
             NewXSwayOffset();
         }
 
@@ -84,10 +91,11 @@ public class Look : MonoBehaviour
             
             cam.localRotation = Quaternion.Lerp(cam.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);
             weapon.localRotation = Quaternion.Lerp(weapon.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);;
-            curYSwaySpeed = Mathf.Lerp(curYSwaySpeed, ySwaySpeed, Time.deltaTime * 1f);
+            curYSwaySpeed = Mathf.Lerp(curYSwaySpeed, ySwaySpeed, Time.deltaTime * 1.25f);
+            ySwayTime += Time.deltaTime;
             
             t_ang = Quaternion.Angle(cam.localRotation, yDelta);
-            if (t_ang < 0.25f || t_ang > ySwayMax) {
+            if (t_ang < 0.25f || t_ang > ySwayMax || ySwayTime > ySwayTimeMax) {
                 NewYSwayOffset();
             }
         //}
