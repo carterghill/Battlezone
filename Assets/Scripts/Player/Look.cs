@@ -14,13 +14,13 @@ public class Look : MonoBehaviour
 
     private Quaternion camCenter;
     private bool cursorLocked;
-    private float ySway = 1f;
-    private float ySwayMax = 2f;
-    private float ySwaySpeed = 1f;
+    private float ySway = 0.75f;
+    private float ySwayMax = 1f;
+    private float ySwaySpeed = 0.4f;
     private float curYSwaySpeed = 0f;
-    private float xSway = 1f;
+    private float xSway = 0.75f;
     private float xSwayMax = 1f;
-    private float xSwaySpeed = 1f;
+    private float xSwaySpeed = 0.5f;
     private float curXSwaySpeed = 0f;
     Quaternion xAdj;
     Quaternion xDelta;
@@ -72,8 +72,10 @@ public class Look : MonoBehaviour
         // Sway horizontal
         player.localRotation = Quaternion.Lerp(player.localRotation, xDelta, Time.deltaTime * curXSwaySpeed);
         curXSwaySpeed = Mathf.Lerp(curXSwaySpeed, xSwaySpeed, Time.deltaTime * 1f);
+        Debug.Log(Quaternion.Angle(player.localRotation, xDelta));
 
-        if (Quaternion.Angle(player.localRotation, xDelta) < 0.5f) {
+        float t_ang = Quaternion.Angle(player.localRotation, xDelta);
+        if (t_ang < 0.25f || t_ang > ySwayMax) {
             NewXSwayOffset();
         }
 
@@ -84,7 +86,8 @@ public class Look : MonoBehaviour
             weapon.localRotation = Quaternion.Lerp(weapon.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);;
             curYSwaySpeed = Mathf.Lerp(curYSwaySpeed, ySwaySpeed, Time.deltaTime * 1f);
             
-            if (Quaternion.Angle(cam.localRotation, yDelta) < 1.0f) {
+            t_ang = Quaternion.Angle(cam.localRotation, yDelta);
+            if (t_ang < 0.25f || t_ang > ySwayMax) {
                 NewYSwayOffset();
             }
         //}
@@ -104,6 +107,8 @@ public class Look : MonoBehaviour
         {
             cam.localRotation = delta;
             weapon.localRotation = delta;
+            //yAdj = Quaternion.AngleAxis(ySway, -Vector3.right);
+            //yDelta = cam.localRotation * yAdj;
         }
     }
 
@@ -115,7 +120,11 @@ public class Look : MonoBehaviour
 
         Quaternion adj = Quaternion.AngleAxis(input, Vector3.up);
         Quaternion delta = player.localRotation * adj;
+        //xDelta = Quaternion.AngleAxis(xDelta, delta);
         player.localRotation = delta;
+        //xAdj = Quaternion.AngleAxis(xSway, Vector3.up);
+        //xDelta = player.localRotation * xAdj;
+        //xDelta *= delta;
         //player.localRotation = Quaternion.Lerp(player.localRotation, delta, Time.deltaTime * 4f);
     }
 
