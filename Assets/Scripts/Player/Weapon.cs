@@ -25,6 +25,9 @@ public class Weapon : MonoBehaviour {
     private Rigidbody playerBody;
     private bool shot;
 
+    private float recoilY;
+    private float recoilX;
+
     #endregion
 
     #region Callbacks
@@ -159,13 +162,19 @@ public class Weapon : MonoBehaviour {
             }
             
             // Gun kickback effect
-            float recoil;
             if (aiming) {
-                recoil = gun.visualRecoilADS;
+                recoilY = gun.visualRecoilADS;
+                //if ((recoilX - gun.visualRecoilXADS) < 0.001 && (recoilX - gun.visualRecoilXADS) > -0.001) {
+                //    recoilX = -gun.visualRecoilXADS;
+                //} else {
+                //    recoilX = gun.visualRecoilXADS;
+                //}
+                recoilX = Random.Range(-gun.visualRecoilXADS, gun.visualRecoilXADS);
             } else {
-                recoil = gun.visualRecoil;
+                recoilY = gun.visualRecoil;
+                recoilX = gun.visualRecoilX;
             }
-            currentWeapon.transform.Rotate(-recoil, 0, 0);
+            currentWeapon.transform.Rotate(-recoilY, recoilX, 0);
             currentWeapon.transform.position -= currentWeapon.transform.forward * gun.kickback;
 
             // Correctly camera angle from gun recoil

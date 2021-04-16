@@ -18,6 +18,8 @@ public class Gun : ScriptableObject {
     public float kickback;
     public float visualRecoil;
     public float visualRecoilADS;
+    public float visualRecoilX;
+    public float visualRecoilXADS;
     public float baseHorizontalRecoil;
     public float baseVerticalRecoil;
     public float randomness;
