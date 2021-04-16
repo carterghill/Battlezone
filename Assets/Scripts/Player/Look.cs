@@ -7,6 +7,7 @@ public class Look : MonoBehaviour
     public Transform player;
     public Transform cam;
     public Transform weapon;
+    public Weapon weaponScript;
 
     public float xSensitivity;
     public float ySensitivity;
@@ -14,18 +15,19 @@ public class Look : MonoBehaviour
 
     private Quaternion camCenter;
     private bool cursorLocked;
-    private float ySway = 0.75f;
+    private float ySway = 0f;
     private float ySwayMax = 1f;
-    private float ySwaySpeed = 0.4f;
+    private float ySwaySpeed = 0f;
     private float curYSwaySpeed = 0f;
     private float ySwayTime = 0f;
-    private float ySwayTimeMax = 3.5f;
-    private float xSway = 0.75f;
+    private float ySwayTimeMax = 1.5f;
+    private float xSway = 0f;
     private float xSwayMax = 1f;
-    private float xSwaySpeed = 0.5f;
+    private float xSwaySpeed = 0f;
     private float curXSwaySpeed = 0f;
     private float xSwayTime = 0f;
-    private float xSwayTimeMax = 3.5f;
+    private float xSwayTimeMax = 1.5f;
+    private string gunName = "None";
     Quaternion xAdj;
     Quaternion xDelta;
     Quaternion yAdj;
@@ -51,7 +53,23 @@ public class Look : MonoBehaviour
         UpdateCursorLock();
     }
 
+    void setGunData() {
+
+        Weapon w = weaponScript;
+        xSwayMax = w.getXSway();
+        xSwaySpeed = w.getXSwaySpeed();
+        xSwayTimeMax = w.getXSwayTime();
+        ySwayMax = w.getYSway();
+        ySwaySpeed = w.getYSwaySpeed();
+        ySwayTimeMax = w.getYSwayTime();
+
+    }
+
     void NewXSwayOffset() {
+
+        if (weaponScript.isEquipped() && weaponScript.getGunName() != gunName) {
+            setGunData();
+        }
 
         xSway = Random.Range(-xSwayMax, xSwayMax);
 
@@ -63,6 +81,10 @@ public class Look : MonoBehaviour
     }
 
     void NewYSwayOffset() {
+
+        if (weaponScript.isEquipped() && weaponScript.getGunName() != gunName) {
+            setGunData();
+        }
 
         ySway = Random.Range(-ySwayMax, ySwayMax);
 
@@ -78,7 +100,6 @@ public class Look : MonoBehaviour
         // Sway horizontal
         player.localRotation = Quaternion.Lerp(player.localRotation, xDelta, Time.deltaTime * curXSwaySpeed);
         curXSwaySpeed = Mathf.Lerp(curXSwaySpeed, xSwaySpeed, Time.deltaTime * 1.25f);
-        Debug.Log(Quaternion.Angle(player.localRotation, xDelta));
         xSwayTime += Time.deltaTime;
 
         float t_ang = Quaternion.Angle(player.localRotation, xDelta);
@@ -89,15 +110,15 @@ public class Look : MonoBehaviour
         // Sway vertical
         //if (Quaternion.Angle(camCenter, yDelta) < maxAngle) {
             
-            cam.localRotation = Quaternion.Lerp(cam.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);
-            weapon.localRotation = Quaternion.Lerp(weapon.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);;
-            curYSwaySpeed = Mathf.Lerp(curYSwaySpeed, ySwaySpeed, Time.deltaTime * 1.25f);
-            ySwayTime += Time.deltaTime;
-            
-            t_ang = Quaternion.Angle(cam.localRotation, yDelta);
-            if (t_ang < 0.25f || t_ang > ySwayMax || ySwayTime > ySwayTimeMax) {
-                NewYSwayOffset();
-            }
+        cam.localRotation = Quaternion.Lerp(cam.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);
+        weapon.localRotation = Quaternion.Lerp(weapon.localRotation, yDelta, Time.deltaTime * curYSwaySpeed);;
+        curYSwaySpeed = Mathf.Lerp(curYSwaySpeed, ySwaySpeed, Time.deltaTime * 1.25f);
+        ySwayTime += Time.deltaTime;
+        
+        t_ang = Quaternion.Angle(cam.localRotation, yDelta);
+        if (t_ang < 0.25f || t_ang > ySwayMax || ySwayTime > ySwayTimeMax) {
+            NewYSwayOffset();
+        }
         //}
 
     }

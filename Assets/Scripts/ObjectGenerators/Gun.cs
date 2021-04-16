@@ -22,4 +22,18 @@ public class Gun : ScriptableObject {
     public float baseVerticalRecoil;
     public float randomness;
 
+    // Aiming sway variables
+    //public float ySway = 0.75f;
+    public float ySwayMax = 1f;
+    public float ySwaySpeed = 0.4f;
+    //private float curYSwaySpeed = 0f;
+    //private float ySwayTime = 0f;
+    public float ySwayTimeMax = 3.5f;
+    //private float xSway = 0.75f;
+    public float xSwayMax = 1f;
+    public float xSwaySpeed = 0.5f;
+    //private float curXSwaySpeed = 0f;
+    //private float xSwayTime = 0f;
+    public float xSwayTimeMax = 3.5f;
+
 }

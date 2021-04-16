@@ -58,6 +58,15 @@ public class Weapon : MonoBehaviour {
 
     #endregion
 
+    public bool isEquipped() { return currentWeapon != null; }
+    public string getGunName() { return loadout[weaponIndex].name; }
+    public float getXSway() { return loadout[weaponIndex].xSwayMax; }
+    public float getXSwaySpeed() { return loadout[weaponIndex].xSwaySpeed; }
+    public float getXSwayTime() { return loadout[weaponIndex].xSwayTimeMax; }
+    public float getYSway() { return loadout[weaponIndex].ySwayMax; }
+    public float getYSwaySpeed() { return loadout[weaponIndex].ySwaySpeed; }
+    public float getYSwayTime() { return loadout[weaponIndex].ySwayTimeMax; }
+
     void Equip (int i) {
 
         // Delete currently equipped gun
