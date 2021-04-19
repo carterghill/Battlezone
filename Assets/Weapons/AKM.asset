@@ -19,9 +19,17 @@ MonoBehaviour:
   walkModifier: 0.8
   aimWalkModifier: 0.5
   bloom: 25
-  kickback: 0.1
+  kickback: 0.005
   visualRecoil: 0.5
-  visualRecoilADS: 0.1
+  visualRecoilADS: 0.25
+  visualRecoilX: 0.25
+  visualRecoilXADS: 0.125
   baseHorizontalRecoil: 100
   baseVerticalRecoil: 300
   randomness: 200
+  ySwayMax: 1
+  ySwaySpeed: 0.4
+  ySwayTimeMax: 3.5
+  xSwayMax: 1
+  xSwaySpeed: 0.5
+  xSwayTimeMax: 3.5

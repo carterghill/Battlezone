@@ -11,6 +11,7 @@ public class Weapon : MonoBehaviour {
     public Camera cam;
     public Movement movement;
     public GameObject player;
+    public GameObject bulletPrefab;
     public GameObject bulletHolePrefab;
     public LayerMask canBeShot;
 
@@ -112,16 +113,6 @@ public class Weapon : MonoBehaviour {
         }
     }
 
-
-    void Shoot2(bool shooting, bool aiming) {
-        if (shot) {
-            // Gun kickback effect
-            Gun gun = loadout[weaponIndex];
-            
-            shot = false;
-        }
-    }
-
     void Shoot(bool shooting, bool aiming) {
         if (shooting && shootTime < 0.001f) {
 
@@ -150,6 +141,12 @@ public class Weapon : MonoBehaviour {
                 Destroy(newHole, 10f);
 
             }
+
+            // Launching the bullet
+            GameObject newBullet = Instantiate(bulletPrefab, spawn.position + spawn.forward * 0.55f, Quaternion.identity) as GameObject;
+            Rigidbody bulletBody = newBullet.GetComponent<Rigidbody>();
+            bulletBody.transform.rotation = cam.transform.rotation;
+            bulletBody.AddForce(10000f * newBullet.transform.forward);
             
             // Add gun recoil if ADS
             if (aiming) {
